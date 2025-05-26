@@ -121,8 +121,8 @@ def main():
     
     # Apply LoRA (or QLoRA since the model is quantized)
     config = LoraConfig(
-        r=16,
-        lora_alpha=32,
+        r=8,
+        lora_alpha=16,
         target_modules=["o_proj", "down_proj"],
         lora_dropout=0.1,
         bias="none",

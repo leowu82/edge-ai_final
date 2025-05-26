@@ -47,3 +47,23 @@ LlamaForCausalLM(
   (lm_head): Linear(in_features=3072, out_features=128256, bias=False)
 )
 ```
+## Principles
+Every token you generate incurs three broad costs:
+
+Compute (FLOPs) to do the attention + feed-forward.
+
+Memory movement for weights, activations, and KV cache.
+
+CPU↔GPU overhead for driver launches, Python loops, and data transfers.
+
+$$Throughput (tokens/sec) =
+
+\frac{\text{# tokens generated}}{\text{Compute time} + \text{Memory time} + \text{Overhead}}$$
+
+To maximize throughput you must:
+
+- Minimize compute time (e.g. by quantizing to lower bits, using faster kernels)
+
+- Minimize memory time (e.g. by coalescing, using Tensor Cores, reducing model size)
+
+- Minimize overhead (e.g. by fusing GPU launches, reducing Python overhead)
