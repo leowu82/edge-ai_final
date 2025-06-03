@@ -1,9 +1,6 @@
 from hqq.core.quantize import BaseQuantizeConfig
 
 def get_quant_config_slm(model):
-    # Print the model architecture
-    # print(model)
-    
     quant_config = {}
     
     n_layers = model.config.num_hidden_layers
