@@ -92,7 +92,7 @@ def main():
     device = 'cuda:0'
     
     ### === TODO: Load your model (you may change this part) ===
-    model_name = "meta-llama/Llama-3.2-3B-Instruct"   
+    model_name = "zbyzby/Llama3.2-3B-Instruct-QLoRA-finetuned"   
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype=torch.float16,
@@ -118,16 +118,16 @@ def main():
     AutoHQQHFModel.quantize_model(model, quant_config=quant_config, compute_dtype=torch.float16, device=device)
     print(f"Model Size After Quant: {get_size_of_model(model)} MB")
     
-    # Apply LoRA (or QLoRA since the model is quantized)
-    config = LoraConfig(
-        r=16,
-        lora_alpha=32,
-        target_modules=["o_proj", "down_proj"],
-        lora_dropout=0.1,
-        bias="none",
-        task_type="CAUSAL_LM"
-    )
-    model = get_peft_model(model, config)
+    # # Apply LoRA (or QLoRA since the model is quantized)
+    # config = LoraConfig(
+    #     r=16,
+    #     lora_alpha=32,
+    #     target_modules=["o_proj", "down_proj"],
+    #     lora_dropout=0.1,
+    #     bias="none",
+    #     task_type="CAUSAL_LM"
+    # )
+    # model = get_peft_model(model, config)
 
     from hqq.utils.patching import prepare_for_inference
     prepare_for_inference(model, backend='gemlite') 
